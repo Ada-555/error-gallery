@@ -43,7 +43,7 @@ const relatedExhibits = exhibits
           <h3>Tags</h3>
           <div class="meta-tags">
             {exhibit.tags.map(tag => (
-              <a href={`/?tag=${tag}`} class="tag">{tag}</a>
+              <a href={`/error-gallery/?tag=${tag}`} class="tag">{tag}</a>
             ))}
           </div>
         </div>
@@ -76,7 +76,7 @@ const relatedExhibits = exhibits
           <a href={exhibit.submittedFrom} target="_blank" rel="noopener" class="btn">
             View Original
           </a>
-          <a href={`/?tag=${exhibit.tags[0]}`} class="btn btn-secondary">
+          <a href={`/error-gallery/?tag=${exhibit.tags[0]}`} class="btn btn-secondary">
             Related Exhibits
           </a>
         </div>

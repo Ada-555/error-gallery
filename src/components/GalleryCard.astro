@@ -13,7 +13,7 @@ export interface Props {
 const { id, website, websiteUrl, screenshot, tags, submitter, dateAdded, upvotes } = Astro.props;
 ---
 
-<a href={`/exhibit/${id}`} class="gallery-card">
+<a href={`/error-gallery/exhibit/${id}`} class="gallery-card">
   <div class="card-image">
     <img src={screenshot} alt={`${website} 404 page`} loading="lazy" />
     <div class="card-overlay">

@@ -190,14 +190,14 @@
     let html = '';
 
     websiteMatches.forEach(e => {
-      html += `<a href="/exhibit/${e.id}" class="suggestion-item">
+      html += `<a href="/error-gallery/exhibit/${e.id}" class="suggestion-item">
         <div class="suggestion-type">Website</div>
         <div class="suggestion-label">${e.website}</div>
       </a>`;
     });
 
     tagMatches.forEach(t => {
-      html += `<a href="/?tag=${t}" class="suggestion-item">
+      html += `<a href="/error-gallery/?tag=${t}" class="suggestion-item">
         <div class="suggestion-type">Tag</div>
         <div class="suggestion-label">#${t}</div>
       </a>`;

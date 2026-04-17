@@ -142,7 +142,7 @@ const allTags = [
       params.delete('year');
     }
     const queryString = params.toString();
-    const newUrl = queryString ? `/?${queryString}` : '/';
+    const newUrl = queryString ? `/error-gallery/?${queryString}` : '/error-gallery/';
     window.location.href = newUrl;
   }
 
@@ -164,7 +164,7 @@ const allTags = [
     tagPills.forEach(p => p.classList.remove('active'));
     activeTag = '';
     if (yearFilter) yearFilter.value = '';
-    window.location.href = '/';
+    window.location.href = '/error-gallery/';
   });
 
   // Check URL params on load
