@@ -30,7 +30,7 @@ const randomExhibit = exhibits[Math.floor(Math.random() * exhibits.length)];
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    background: var(--color-accent-purple);
+    background: linear-gradient(135deg, var(--color-accent-purple) 0%, #6366f1 100%);
     color: white;
     border: none;
     border-radius: var(--radius-lg);
@@ -42,11 +42,13 @@ const randomExhibit = exhibits[Math.floor(Math.random() * exhibits.length)];
     box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
     transition: all var(--transition-normal);
     z-index: 50;
+    animation: pulse 2s ease-in-out infinite;
   }
 
   .random-fab:hover {
     transform: translateY(-2px) scale(1.02);
     box-shadow: 0 8px 30px rgba(139, 92, 246, 0.5);
+    animation: none;
   }
 
   .fab-icon {
@@ -62,6 +64,11 @@ const randomExhibit = exhibits[Math.floor(Math.random() * exhibits.length)];
 
   .fab-label {
     white-space: nowrap;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4); }
+    50% { box-shadow: 0 4px 30px rgba(139, 92, 246, 0.6); }
   }
 
   @media (max-width: 600px) {

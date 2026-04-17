@@ -33,8 +33,25 @@ if (filterYear) {
 
   <main class="main">
     <section class="hero">
-      <h1 class="hero-title">404 Museum</h1>
-      <p class="hero-subtitle">The internet's best 404 pages, preserved and celebrated.</p>
+      <div class="hero-badge reveal">12 Exhibits</div>
+      <h1 class="hero-title reveal reveal-delay-1">404 Museum</h1>
+      <p class="hero-subtitle reveal reveal-delay-2">The internet's best 404 pages, preserved and celebrated.</p>
+      <div class="hero-stats reveal reveal-delay-3">
+        <div class="stat">
+          <span class="stat-number">12</span>
+          <span class="stat-label">Exhibits</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-number">12</span>
+          <span class="stat-label">Companies</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-number">1</span>
+          <span class="stat-label">Curator</span>
+        </div>
+      </div>
     </section>
 
     <section class="gallery-section">
@@ -72,19 +89,72 @@ if (filterYear) {
     margin: 0 auto;
   }
 
+  .hero-badge {
+    display: inline-block;
+    background: rgba(201, 168, 76, 0.15);
+    border: 1px solid var(--color-accent);
+    color: var(--color-accent);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: var(--space-1) var(--space-3);
+    border-radius: 20px;
+    margin-bottom: var(--space-3);
+  }
+
   .hero-title {
     font-family: var(--font-heading);
-    font-size: 3.5rem;
+    font-size: 4rem;
     font-weight: 700;
     color: var(--color-accent);
     margin-bottom: var(--space-3);
-    letter-spacing: -1px;
+    letter-spacing: -2px;
+    text-shadow: 0 0 60px rgba(201, 168, 76, 0.3);
   }
 
   .hero-subtitle {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     color: var(--color-text-muted);
-    margin: 0;
+    margin: 0 0 var(--space-4) 0;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-stats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    margin-top: var(--space-4);
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  .stat-number {
+    font-family: var(--font-heading);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .stat-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--color-text-muted);
+  }
+
+  .stat-divider {
+    width: 1px;
+    height: 40px;
+    background: rgba(245, 240, 232, 0.15);
   }
 
   .gallery-section {
@@ -122,7 +192,7 @@ if (filterYear) {
     }
 
     .hero-title {
-      font-size: 2.5rem;
+      font-size: 3rem;
     }
   }
 
@@ -132,7 +202,105 @@ if (filterYear) {
     }
 
     .hero-title {
-      font-size: 2rem;
+      font-size: 2.5rem;
+    }
+
+    .hero-stats {
+      gap: var(--space-3);
+    }
+
+    .stat-number {
+      font-size: 1.5rem;
     }
   }
 </style>
+
+<script>
+  interface Exhibit {
+    id: string;
+    website: string;
+    websiteUrl: string;
+    submittedFrom: string;
+    screenshot: string;
+    tags: string[];
+    submitter: string;
+    dateAdded: string;
+    upvotes: number;
+    iframeUrl: string | null;
+  }
+
+  const exhibits: Exhibit = [
+    { id: 'stripe-001', website: 'Stripe', websiteUrl: 'https://stripe.com', submittedFrom: 'https://stripe.com/404', screenshot: 'screenshots/stripe-404.jpg', tags: ['saas', 'minimal', 'illustration'], submitter: 'kay_c555', dateAdded: '2026-04-17', upvotes: 142, iframeUrl: null },
+    { id: 'github-002', website: 'GitHub', websiteUrl: 'https://github.com', submittedFrom: 'https://github.com/404', screenshot: 'screenshots/github-404.jpg', tags: ['developer', 'illustration', 'space'], submitter: 'kay_c555', dateAdded: '2026-04-17', upvotes: 98, iframeUrl: null },
+    { id: 'airbnb-003', website: 'Airbnb', websiteUrl: 'https://airbnb.com', submittedFrom: 'https://airbnb.com/404', screenshot: 'screenshots/airbnb-404.jpg', tags: ['travel', 'illustration', 'warm'], submitter: 'kay_c555', dateAdded: '2026-04-17', upvotes: 87, iframeUrl: null },
+    { id: 'slack-004', website: 'Slack', websiteUrl: 'https://slack.com', submittedFrom: 'https://slack.com/404', screenshot: 'screenshots/slack-404.jpg', tags: ['saas', 'illustration', 'cute'], submitter: 'kay_c555', dateAdded: '2026-04-17', upvotes: 76, iframeUrl: null },
+    { id: 'mailchimp-005', website: 'Mailchimp', websiteUrl: 'https://mailchimp.com', submittedFrom: 'https://mailchimp.com/404', screenshot: 'screenshots/mailchimp-404.jpg', tags: ['email', 'illustration', 'fun'], submitter: 'kay_c555', dateAdded: '2026-04-17', upvotes: 65, iframeUrl: null },
+    { id: 'notion-006', website: 'Notion', websiteUrl: 'https://notion.so', submittedFrom: 'https://notion.so/404', screenshot: 'screenshots/notion-404.jpg', tags: ['productivity', 'minimal', 'space'], submitter: 'kay_c555', dateAdded: '2026-04-17', upvotes: 112, iframeUrl: null },
+    { id: 'figma-007', website: 'Figma', websiteUrl: 'https://figma.com', submittedFrom: 'https://figma.com/404', screenshot: 'screenshots/figma-404.jpg', tags: ['design', 'minimal', 'glitch'], submitter: 'kay_c555', dateAdded: '2026-04-17', upvotes: 89, iframeUrl: null },
+    { id: 'linear-008', website: 'Linear', websiteUrl: 'https://linear.app', submittedFrom: 'https://linear.app/404', screenshot: 'screenshots/linear-404.jpg', tags: ['saas', 'minimal', 'glitch'], submitter: 'kay_c555', dateAdded: '2026-04-17', upvotes: 94, iframeUrl: null },
+    { id: 'kickstarter-009', website: 'Kickstarter', websiteUrl: 'https://kickstarter.com', submittedFrom: 'https://kickstarter.com/404', screenshot: 'screenshots/kickstarter-404.jpg', tags: ['crowdfunding', 'illustration', 'paper'], submitter: 'kay_c555', dateAdded: '2026-04-17', upvotes: 58, iframeUrl: null },
+    { id: 'discord-010', website: 'Discord', websiteUrl: 'https://discord.com', submittedFrom: 'https://discord.com/404', screenshot: 'screenshots/discord-404.jpg', tags: ['gaming', 'illustration', 'sound'], submitter: 'kay_c555', dateAdded: '2026-04-17', upvotes: 71, iframeUrl: null },
+    { id: 'lego-011', website: 'LEGO', websiteUrl: 'https://lego.com', submittedFrom: 'https://lego.com/404', screenshot: 'screenshots/lego-404.jpg', tags: ['brand', 'illustration', 'playful'], submitter: 'kay_c555', dateAdded: '2026-04-17', upvotes: 83, iframeUrl: null },
+    { id: 'pixar-012', website: 'Pixar', websiteUrl: 'https://pixar.com', submittedFrom: 'https://pixar.com/404', screenshot: 'screenshots/pixar-404.jpg', tags: ['entertainment', 'illustration', 'nostalgic'], submitter: 'kay_c555', dateAdded: '2026-04-17', upvotes: 101, iframeUrl: null },
+  ];
+
+  function createCard(exhibit: Exhibit): string {
+    return `
+      <a href="/error-gallery/exhibit/${exhibit.id}" class="gallery-card">
+        <div class="card-image">
+          <img src="${exhibit.screenshot}" alt="${exhibit.website} 404 page" loading="lazy" />
+          <div class="card-overlay">
+            <span class="view-btn">View Exhibit</span>
+          </div>
+        </div>
+        <div class="card-meta">
+          <div class="card-header">
+            <h3 class="card-title">${exhibit.website}</h3>
+            <span class="card-upvotes">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 19V5M5 12l7-7 7 7"/>
+              </svg>
+              ${exhibit.upvotes}
+            </span>
+          </div>
+          <div class="card-tags">
+            ${exhibit.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('')}
+          </div>
+          <div class="card-footer">
+            <span class="card-submitter">by ${exhibit.submitter}</span>
+            <span class="card-date">${exhibit.dateAdded}</span>
+          </div>
+        </div>
+      </a>
+    `;
+  }
+
+  function filterAndRender() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const filterTag = urlParams.get('tag') || '';
+    const filterYear = urlParams.get('year') || '';
+
+    let filtered = exhibits;
+    if (filterTag) {
+      filtered = filtered.filter(e => e.tags.includes(filterTag));
+    }
+    if (filterYear) {
+      filtered = filtered.filter(e => e.dateAdded.startsWith(filterYear));
+    }
+
+    const grid = document.querySelector('.gallery-grid');
+    const emptyState = document.querySelector('.empty-state');
+    if (grid) {
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        if (emptyState) (emptyState as HTMLElement).style.display = 'block';
+      } else {
+        grid.innerHTML = filtered.map(createCard).join('');
+        if (emptyState) (emptyState as HTMLElement).style.display = 'none';
+      }
+    }
+  }
+
+  window.addEventListener('filter-changed', filterAndRender);
+  filterAndRender();
+</script>

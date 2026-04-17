@@ -20,8 +20,6 @@ const allTags = [
     <select id="yearFilter" class="filter-select">
       <option value="">All years</option>
       <option value="2026">2026</option>
-      <option value="2025">2025</option>
-      <option value="2024">2024</option>
     </select>
 
     <button class="clear-btn" id="clearFilters">Clear filters</button>
@@ -143,7 +141,10 @@ const allTags = [
     }
     const queryString = params.toString();
     const newUrl = queryString ? `/error-gallery/?${queryString}` : '/error-gallery/';
-    window.location.href = newUrl;
+    history.pushState({}, '', newUrl);
+
+    // Trigger custom event for gallery to re-filter
+    window.dispatchEvent(new CustomEvent('filter-changed', { detail: { tag: activeTag, year: yearFilter?.value || '' } }));
   }
 
   tagPills.forEach(pill => {
@@ -157,14 +158,18 @@ const allTags = [
         activeTag = tag;
         pill.classList.add('active');
       }
+      updateURL();
     });
   });
+
+  yearFilter?.addEventListener('change', updateURL);
 
   clearBtn?.addEventListener('click', () => {
     tagPills.forEach(p => p.classList.remove('active'));
     activeTag = '';
     if (yearFilter) yearFilter.value = '';
-    window.location.href = '/error-gallery/';
+    history.pushState({}, '', '/error-gallery/');
+    window.dispatchEvent(new CustomEvent('filter-changed', { detail: { tag: '', year: '' } }));
   });
 
   // Check URL params on load

@@ -80,6 +80,25 @@ const relatedExhibits = exhibits
             Related Exhibits
           </a>
         </div>
+
+        <div class="share-section">
+          <h3>Share</h3>
+          <div class="share-buttons">
+            <button class="share-btn" id="copyLinkBtn" title="Copy link">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+              </svg>
+              Copy Link
+            </button>
+            <a href={`https://twitter.com/intent/tweet?text=Check out this 404 page from ${exhibit.website}&url=${typeof window !== 'undefined' ? window.location.href : ''}`} target="_blank" rel="noopener" class="share-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+              Share
+            </a>
+          </div>
+        </div>
       </aside>
     </div>
 
@@ -96,6 +115,24 @@ const relatedExhibits = exhibits
   </main>
 
   <Footer />
+<script>
+  const copyBtn = document.getElementById('copyLinkBtn');
+  copyBtn?.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      copyBtn.classList.add('copied');
+      const originalText = copyBtn.innerHTML;
+      copyBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
+      setTimeout(() => {
+        copyBtn.classList.remove('copied');
+        copyBtn.innerHTML = originalText;
+      }, 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  });
+</script>
+
 </BaseLayout>
 
 <style>
@@ -204,6 +241,51 @@ const relatedExhibits = exhibits
   .meta-actions .btn {
     justify-content: center;
     text-align: center;
+  }
+
+  .share-section {
+    padding-top: var(--space-3);
+    border-top: 1px solid rgba(245, 240, 232, 0.1);
+    margin-top: var(--space-2);
+  }
+
+  .share-section h3 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .share-buttons {
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  .share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    background: var(--color-bg);
+    border: 1px solid rgba(245, 240, 232, 0.2);
+    border-radius: var(--radius-md);
+    padding: var(--space-2) var(--space-3);
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .share-btn:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .share-btn.copied {
+    border-color: #22c55e;
+    color: #22c55e;
   }
 
   .related-section {
