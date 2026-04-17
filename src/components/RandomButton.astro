@@ -1,0 +1,85 @@
+---
+const exhibits = [
+  { id: 'stripe-001', website: 'Stripe' },
+  { id: 'github-002', website: 'GitHub' },
+  { id: 'airbnb-003', website: 'Airbnb' },
+  { id: 'slack-004', website: 'Slack' },
+  { id: 'mailchimp-005', website: 'Mailchimp' },
+  { id: 'notion-006', website: 'Notion' },
+  { id: 'figma-007', website: 'Figma' },
+  { id: 'linear-008', website: 'Linear' },
+  { id: 'kickstarter-009', website: 'Kickstarter' },
+  { id: 'discord-010', website: 'Discord' },
+  { id: 'lego-011', website: 'LEGO' },
+  { id: 'pixar-012', website: 'Pixar' },
+];
+
+const randomExhibit = exhibits[Math.floor(Math.random() * exhibits.length)];
+---
+
+<button class="random-fab" id="randomBtn" aria-label="I'm feeling curious">
+  <span class="fab-icon">?</span>
+  <span class="fab-label">I'm feeling curious</span>
+</button>
+
+<style>
+  .random-fab {
+    position: fixed;
+    bottom: var(--space-4);
+    right: var(--space-4);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: var(--color-accent-purple);
+    color: white;
+    border: none;
+    border-radius: var(--radius-lg);
+    padding: var(--space-3) var(--space-4);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+    transition: all var(--transition-normal);
+    z-index: 50;
+  }
+
+  .random-fab:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(139, 92, 246, 0.5);
+  }
+
+  .fab-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    font-size: 14px;
+  }
+
+  .fab-label {
+    white-space: nowrap;
+  }
+
+  @media (max-width: 600px) {
+    .fab-label {
+      display: none;
+    }
+
+    .random-fab {
+      padding: var(--space-3);
+      border-radius: 50%;
+    }
+  }
+</style>
+
+<script define:vars={{ randomExhibit }}>
+  document.getElementById('randomBtn')?.addEventListener('click', () => {
+    const exhibits = ['stripe-001', 'github-002', 'airbnb-003', 'slack-004', 'mailchimp-005', 'notion-006', 'figma-007', 'linear-008', 'kickstarter-009', 'discord-010', 'lego-011', 'pixar-012'];
+    const randomId = exhibits[Math.floor(Math.random() * exhibits.length)];
+    window.location.href = `/exhibit/${randomId}`;
+  });
+</script>

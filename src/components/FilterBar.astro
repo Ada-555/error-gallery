@@ -1,0 +1,181 @@
+---
+const allTags = [
+  'saas', 'minimal', 'illustration', 'space', 'cute', 'fun',
+  'glitch', 'playful', 'brand', 'gaming', 'travel', 'email',
+  'productivity', 'design', 'crowdfunding', 'entertainment'
+];
+---
+
+<div class="filter-bar">
+  <div class="filter-section">
+    <span class="filter-label">Filter by tag:</span>
+    <div class="tag-pills" id="tagPills">
+      {allTags.map(tag => (
+        <button class="tag-pill" data-tag={tag}>{tag}</button>
+      ))}
+    </div>
+  </div>
+
+  <div class="filter-row">
+    <select id="yearFilter" class="filter-select">
+      <option value="">All years</option>
+      <option value="2026">2026</option>
+      <option value="2025">2025</option>
+      <option value="2024">2024</option>
+    </select>
+
+    <button class="clear-btn" id="clearFilters">Clear filters</button>
+  </div>
+</div>
+
+<style>
+  .filter-bar {
+    background: var(--color-bg-card);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .filter-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .filter-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--color-text-muted);
+  }
+
+  .tag-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .tag-pill {
+    background: transparent;
+    border: 1px solid var(--color-text-muted);
+    border-radius: var(--radius-sm);
+    padding: var(--space-1) var(--space-2);
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: lowercase;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .tag-pill:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .tag-pill.active {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-bg);
+  }
+
+  .filter-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding-top: var(--space-2);
+    border-top: 1px solid rgba(245, 240, 232, 0.1);
+  }
+
+  .filter-select {
+    min-width: 140px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-text-muted);
+    border-radius: var(--radius-md);
+    padding: var(--space-2) var(--space-3);
+    color: var(--color-text);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    cursor: pointer;
+  }
+
+  .filter-select:focus {
+    outline: none;
+    border-color: var(--color-accent);
+  }
+
+  .clear-btn {
+    background: transparent;
+    border: none;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    cursor: pointer;
+    padding: var(--space-2);
+    transition: color var(--transition-fast);
+  }
+
+  .clear-btn:hover {
+    color: var(--color-accent);
+  }
+</style>
+
+<script>
+  const tagPills = document.querySelectorAll('.tag-pill');
+  const yearFilter = document.getElementById('yearFilter') as HTMLSelectElement;
+  const clearBtn = document.getElementById('clearFilters');
+
+  let activeTag = '';
+
+  function updateURL() {
+    const params = new URLSearchParams(window.location.search);
+    if (activeTag) {
+      params.set('tag', activeTag);
+    } else {
+      params.delete('tag');
+    }
+    if (yearFilter?.value) {
+      params.set('year', yearFilter.value);
+    } else {
+      params.delete('year');
+    }
+    const queryString = params.toString();
+    const newUrl = queryString ? `/?${queryString}` : '/';
+    window.location.href = newUrl;
+  }
+
+  tagPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      const tag = pill.getAttribute('data-tag') || '';
+      if (tag === activeTag) {
+        activeTag = '';
+        pill.classList.remove('active');
+      } else {
+        tagPills.forEach(p => p.classList.remove('active'));
+        activeTag = tag;
+        pill.classList.add('active');
+      }
+    });
+  });
+
+  clearBtn?.addEventListener('click', () => {
+    tagPills.forEach(p => p.classList.remove('active'));
+    activeTag = '';
+    if (yearFilter) yearFilter.value = '';
+    window.location.href = '/';
+  });
+
+  // Check URL params on load
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlTag = urlParams.get('tag');
+  if (urlTag) {
+    activeTag = urlTag;
+    tagPills.forEach(pill => {
+      if (pill.getAttribute('data-tag') === urlTag) {
+        pill.classList.add('active');
+      }
+    });
+  }
+</script>

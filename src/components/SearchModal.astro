@@ -1,0 +1,226 @@
+---
+---
+
+<div class="search-modal" id="searchModal">
+  <div class="modal-backdrop" id="modalBackdrop"></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <input
+        type="text"
+        class="search-input"
+        id="searchInput"
+        placeholder="Search 404 pages..."
+        autocomplete="off"
+      />
+      <button class="close-btn" id="closeModal" aria-label="Close search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+    <div class="suggestions" id="suggestions">
+      <p class="suggestions-hint">Type to search...</p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .search-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 10vh;
+  }
+
+  .search-modal.active {
+    display: flex;
+  }
+
+  .modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-content {
+    position: relative;
+    width: 100%;
+    max-width: 560px;
+    margin: 0 var(--space-3);
+    background: var(--color-bg-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(245, 240, 232, 0.1);
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    border-bottom: 1px solid rgba(245, 240, 232, 0.1);
+  }
+
+  .search-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--color-text);
+    font-family: var(--font-mono);
+    font-size: 16px;
+    padding: var(--space-2);
+  }
+
+  .search-input:focus {
+    outline: none;
+  }
+
+  .search-input::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  .close-btn {
+    background: transparent;
+    border: none;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    padding: var(--space-2);
+    transition: color var(--transition-fast);
+  }
+
+  .close-btn:hover {
+    color: var(--color-text);
+  }
+
+  .suggestions {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: var(--space-2);
+  }
+
+  .suggestions-hint {
+    color: var(--color-text-muted);
+    font-size: 13px;
+    text-align: center;
+    padding: var(--space-4);
+    margin: 0;
+  }
+
+  .suggestion-item {
+    display: block;
+    padding: var(--space-3);
+    border-radius: var(--radius-md);
+    color: var(--color-text);
+    text-decoration: none;
+    transition: background var(--transition-fast);
+    cursor: pointer;
+  }
+
+  .suggestion-item:hover {
+    background: var(--color-bg-card-hover);
+  }
+
+  .suggestion-type {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-1);
+  }
+
+  .suggestion-label {
+    font-family: var(--font-heading);
+    font-size: 15px;
+  }
+</style>
+
+<script>
+  const modal = document.getElementById('searchModal');
+  const input = document.getElementById('searchInput') as HTMLInputElement;
+  const suggestions = document.getElementById('suggestions');
+  const searchBtn = document.getElementById('searchBtn');
+  const closeBtn = document.getElementById('closeModal');
+  const backdrop = document.getElementById('modalBackdrop');
+
+  const exhibits = [
+    { website: 'Stripe', id: 'stripe-001', tags: ['saas', 'minimal'] },
+    { website: 'GitHub', id: 'github-002', tags: ['developer'] },
+    { website: 'Airbnb', id: 'airbnb-003', tags: ['travel'] },
+    { website: 'Slack', id: 'slack-004', tags: ['saas'] },
+    { website: 'Mailchimp', id: 'mailchimp-005', tags: ['email'] },
+    { website: 'Notion', id: 'notion-006', tags: ['productivity'] },
+    { website: 'Figma', id: 'figma-007', tags: ['design'] },
+    { website: 'Linear', id: 'linear-008', tags: ['saas'] },
+    { website: 'Kickstarter', id: 'kickstarter-009', tags: ['crowdfunding'] },
+    { website: 'Discord', id: 'discord-010', tags: ['gaming'] },
+    { website: 'LEGO', id: 'lego-011', tags: ['brand'] },
+    { website: 'Pixar', id: 'pixar-012', tags: ['entertainment'] },
+  ];
+
+  const allTags = ['saas', 'minimal', 'illustration', 'space', 'cute', 'fun', 'glitch', 'playful', 'brand', 'gaming', 'travel', 'email', 'productivity', 'design', 'crowdfunding', 'entertainment'];
+
+  function openModal() {
+    modal?.classList.add('active');
+    input?.focus();
+  }
+
+  function closeModal() {
+    modal?.classList.remove('active');
+    if (input) input.value = '';
+    if (suggestions) suggestions.innerHTML = '<p class="suggestions-hint">Type to search...</p>';
+  }
+
+  function updateSuggestions(query: string) {
+    if (!suggestions) return;
+
+    if (query.length < 2) {
+      suggestions.innerHTML = '<p class="suggestions-hint">Type to search...</p>';
+      return;
+    }
+
+    const q = query.toLowerCase();
+    const websiteMatches = exhibits.filter(e => e.website.toLowerCase().includes(q));
+    const tagMatches = allTags.filter(t => t.toLowerCase().includes(q));
+
+    let html = '';
+
+    websiteMatches.forEach(e => {
+      html += `<a href="/exhibit/${e.id}" class="suggestion-item">
+        <div class="suggestion-type">Website</div>
+        <div class="suggestion-label">${e.website}</div>
+      </a>`;
+    });
+
+    tagMatches.forEach(t => {
+      html += `<a href="/?tag=${t}" class="suggestion-item">
+        <div class="suggestion-type">Tag</div>
+        <div class="suggestion-label">#${t}</div>
+      </a>`;
+    });
+
+    if (html === '') {
+      html = '<p class="suggestions-hint">No results found</p>';
+    }
+
+    suggestions.innerHTML = html;
+  }
+
+  searchBtn?.addEventListener('click', openModal);
+  closeBtn?.addEventListener('click', closeModal);
+  backdrop?.addEventListener('click', closeModal);
+
+  input?.addEventListener('input', (e) => {
+    updateSuggestions((e.target as HTMLInputElement).value);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal?.classList.contains('active')) {
+      closeModal();
+    }
+  });
+</script>

@@ -1,0 +1,125 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import GalleryCard from '../components/GalleryCard.astro';
+import SearchModal from '../components/SearchModal.astro';
+import exhibits from '../data/exhibits.json';
+
+const query = Astro.url.searchParams.get('q') || '';
+
+const results = query ? exhibits.filter(exhibit => {
+  const q = query.toLowerCase();
+  return (
+    exhibit.website.toLowerCase().includes(q) ||
+    exhibit.tags.some(t => t.toLowerCase().includes(q)) ||
+    exhibit.submittedFrom.toLowerCase().includes(q)
+  );
+}) : [];
+---
+
+<BaseLayout title={query ? `Search: ${query}` : 'Search'}>
+  <Header />
+  <SearchModal />
+
+  <main class="main">
+    <div class="search-header">
+      {query ? (
+        <>
+          <h1 class="search-title">Search results for "{query}"</h1>
+          <p class="search-count">{results.length} exhibit{results.length !== 1 ? 's' : ''} found</p>
+        </>
+      ) : (
+        <h1 class="search-title">Search the Museum</h1>
+      )}
+    </div>
+
+    <form class="search-form" method="get" action="/search">
+      <input
+        type="text"
+        name="q"
+        class="search-input"
+        placeholder="Search by website name, tag, or URL..."
+        value={query}
+        autocomplete="off"
+      />
+      <button type="submit" class="btn">Search</button>
+    </form>
+
+    {query && results.length > 0 && (
+      <div class="results-grid">
+        {results.map(exhibit => (
+          <GalleryCard {...exhibit} />
+        ))}
+      </div>
+    )}
+
+    {query && results.length === 0 && (
+      <div class="empty-state">
+        <p>No exhibits found matching "{query}".</p>
+        <a href="/" class="btn btn-secondary">Browse all exhibits</a>
+      </div>
+    )}
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .main {
+    flex: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--space-5) var(--space-3);
+    width: 100%;
+  }
+
+  .search-header {
+    text-align: center;
+    margin-bottom: var(--space-4);
+  }
+
+  .search-title {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    color: var(--color-text);
+    margin-bottom: var(--space-2);
+  }
+
+  .search-count {
+    color: var(--color-text-muted);
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .search-form {
+    display: flex;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .search-input {
+    flex: 1;
+    padding: var(--space-3);
+    font-size: 15px;
+  }
+
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--space-4);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: var(--space-5);
+    color: var(--color-text-muted);
+  }
+
+  .empty-state .btn {
+    margin-top: var(--space-3);
+  }
+</style>

@@ -1,0 +1,138 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import GalleryCard from '../components/GalleryCard.astro';
+import FilterBar from '../components/FilterBar.astro';
+import RandomButton from '../components/RandomButton.astro';
+import SearchModal from '../components/SearchModal.astro';
+import exhibits from '../data/exhibits.json';
+
+const urlParams = new URLSearchParams(Astro.url.search);
+const filterTag = urlParams.get('tag');
+const filterYear = urlParams.get('year');
+
+let filteredExhibits = exhibits;
+
+if (filterTag) {
+  filteredExhibits = filteredExhibits.filter(exhibit =>
+    exhibit.tags.includes(filterTag)
+  );
+}
+
+if (filterYear) {
+  filteredExhibits = filteredExhibits.filter(exhibit =>
+    exhibit.dateAdded.startsWith(filterYear)
+  );
+}
+---
+
+<BaseLayout title="Gallery">
+  <Header />
+  <SearchModal />
+
+  <main class="main">
+    <section class="hero">
+      <h1 class="hero-title">404 Museum</h1>
+      <p class="hero-subtitle">The internet's best 404 pages, preserved and celebrated.</p>
+    </section>
+
+    <section class="gallery-section">
+      <FilterBar />
+
+      <div class="gallery-grid">
+        {filteredExhibits.map(exhibit => (
+          <GalleryCard {...exhibit} />
+        ))}
+      </div>
+
+      {filteredExhibits.length === 0 && (
+        <div class="empty-state">
+          <p>No exhibits found matching your filters.</p>
+          <a href="/" class="btn">Clear filters</a>
+        </div>
+      )}
+    </section>
+  </main>
+
+  <Footer />
+  <RandomButton />
+</BaseLayout>
+
+<style>
+  .main {
+    flex: 1;
+    padding: var(--space-4) 0;
+  }
+
+  .hero {
+    text-align: center;
+    padding: var(--space-5) var(--space-3);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .hero-title {
+    font-family: var(--font-heading);
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    margin-bottom: var(--space-3);
+    letter-spacing: -1px;
+  }
+
+  .hero-subtitle {
+    font-size: 1.1rem;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .gallery-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .gallery-grid {
+    columns: 3;
+    column-gap: var(--space-4);
+  }
+
+  .gallery-grid > :global(*) {
+    break-inside: avoid;
+    margin-bottom: var(--space-4);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: var(--space-5);
+    color: var(--color-text-muted);
+  }
+
+  .empty-state .btn {
+    margin-top: var(--space-3);
+  }
+
+  @media (max-width: 900px) {
+    .gallery-grid {
+      columns: 2;
+    }
+
+    .hero-title {
+      font-size: 2.5rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .gallery-grid {
+      columns: 1;
+    }
+
+    .hero-title {
+      font-size: 2rem;
+    }
+  }
+</style>

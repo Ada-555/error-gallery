@@ -1,0 +1,165 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout title="About">
+  <Header />
+
+  <main class="main">
+    <div class="about-container">
+      <header class="about-header">
+        <h1 class="about-title">The 404 Museum</h1>
+        <p class="about-tagline">The internet's best 404 pages, preserved and celebrated.</p>
+      </header>
+
+      <section class="about-section">
+        <h2>What's this?</h2>
+        <p>
+          The 404 Museum is a curated archive of beautifully designed 404 error pages from across the web.
+          When most sites show a generic "Page Not Found" message, these ones treat the 404 as an opportunity
+          for creativity, branding, and delight.
+        </p>
+        <p>
+          This museum preserves them so you can appreciate the craft that goes into making "nothing found"
+          feel like something worth seeing.
+        </p>
+      </section>
+
+      <section class="about-section">
+        <h2>How it works</h2>
+        <ul>
+          <li>Browse the gallery to discover creative 404 pages from well-known companies</li>
+          <li>Click any exhibit to see it in detail, along with metadata about when and who submitted it</li>
+          <li>Use the "I'm feeling curious" button to be surprised by a random exhibit</li>
+          <li>Filter by tags to find specific styles (minimal, illustration, glitch, etc.)</li>
+        </ul>
+      </section>
+
+      <section class="about-section">
+        <h2>Submit your own</h2>
+        <p>
+          Found a beautiful 404 page that belongs in the museum?
+          <a href="/submit">Submit it here</a> and it will be reviewed before being added to the collection.
+        </p>
+      </section>
+
+      <section class="about-section">
+        <h2>Contributors</h2>
+        <div class="contributors">
+          <div class="contributor">
+            <span class="contributor-name">kay_c555</span>
+            <span class="contributor-role">Founder & Curator</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="about-section">
+        <h2>Credits</h2>
+        <p>
+          Built with <a href="https://astro.build" target="_blank" rel="noopener">Astro</a>.
+          Hosted on GitHub Pages. Fonts: <a href="https://fonts.google.com/specimen/Fraunces" target="_blank" rel="noopener">Fraunces</a> and <a href="https://fonts.google.com/specimen/JetBrains+Mono" target="_blank" rel="noopener">JetBrains Mono</a>.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .main {
+    flex: 1;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: var(--space-5) var(--space-3);
+    width: 100%;
+  }
+
+  .about-container {
+    background: var(--color-bg-card);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+  }
+
+  .about-header {
+    text-align: center;
+    margin-bottom: var(--space-5);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid rgba(245, 240, 232, 0.1);
+  }
+
+  .about-title {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    color: var(--color-accent);
+    margin-bottom: var(--space-2);
+  }
+
+  .about-tagline {
+    color: var(--color-text-muted);
+    font-size: 16px;
+    margin: 0;
+  }
+
+  .about-section {
+    margin-bottom: var(--space-5);
+  }
+
+  .about-section h2 {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    color: var(--color-text);
+    margin-bottom: var(--space-3);
+  }
+
+  .about-section p {
+    color: var(--color-text-muted);
+    line-height: 1.7;
+  }
+
+  .about-section ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .about-section li {
+    color: var(--color-text-muted);
+    padding: var(--space-2) 0;
+    padding-left: var(--space-3);
+    position: relative;
+  }
+
+  .about-section li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+  }
+
+  .contributors {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .contributor {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-3);
+    background: var(--color-bg);
+    border-radius: var(--radius-md);
+  }
+
+  .contributor-name {
+    color: var(--color-accent-purple);
+    font-weight: 600;
+  }
+
+  .contributor-role {
+    color: var(--color-text-muted);
+    font-size: 13px;
+  }
+</style>
